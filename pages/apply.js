@@ -6,10 +6,20 @@ const STAGE = {
     NAME: 'NAME',
     INSTAGRAM: 'INSTAGRAM',
     NUMBER: 'NUMBER',
+    ONLYFANS: 'ONLYFANS'
+}
+
+const ERROR = {
+    NAME: 'Name is required',
+    INSTAGRAM: 'Instagram handle is required',
+    NUMBER: 'Number is Required!',
+    INVALID_NUMBER: 'Only numbers are allowed',
+    ONLYFANS: 'Onlyfans handle is Required!',
+    NONE: '',
 }
 
 const regex_full = /^(\+?[0-9]+)?$/;
-const regex_indvidual_char = /^\+?[0-9]*$/;   
+const regex_indvidual_char = /^\+?[0-9]*$/;
 
 function getNextStage(stage) {
     switch (stage) {
@@ -20,6 +30,8 @@ function getNextStage(stage) {
         case STAGE.INSTAGRAM:
             return STAGE.NUMBER;
         case STAGE.NUMBER:
+            return STAGE.ONLYFANS;
+        case STAGE.ONLYFANS:
             return null;
         default:
             return null;
@@ -44,7 +56,7 @@ function Prompt({ stage, setStage }) {
     )
 }
 
-function Name({ stage, setStage, name, setName, error, setError , completedStages}) {
+function Name({ stage, setStage, name, setName, error, setError, completedStages }) {
 
     return (
         <div className="flex flex-col items-center justify-center flex-1 text-center">
@@ -57,7 +69,7 @@ function Name({ stage, setStage, name, setName, error, setError , completedStage
                 </p>
                 <input autoFocus type="text" className="mt-4 px-4 py-2 bg-gray-100 rounded border border-blue-300"
                     placeholder={`Firstname Lastname`}
-                    onChange={(e) => { setError(''); setName(e.target.value); }} value={name} />
+                    onChange={(e) => { setError(ERROR.NONE); setName(e.target.value); }} value={name} />
                 <div className='flex items-center gap-2' >
 
                     <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" onClick={() => {
@@ -80,7 +92,7 @@ function Name({ stage, setStage, name, setName, error, setError , completedStage
     )
 }
 
-function Instagram({ stage, setStage, instagram, setInstagram, error, setError , completedStages}) {
+function Instagram({ stage, setStage, instagram, setInstagram, error, setError, completedStages }) {
 
     return (
         <div className="flex flex-col items-center justify-center flex-1 text-center">
@@ -93,7 +105,7 @@ function Instagram({ stage, setStage, instagram, setInstagram, error, setError ,
                 </p>
                 <input autoFocus type="text" className="mt-4 px-4 py-2 bg-gray-100 rounded border border-blue-300"
                     placeholder={`@username`}
-                    onChange={(e) => { setError(''); setInstagram(e.target.value); }} value={instagram} />
+                    onChange={(e) => { setError(ERROR.NONE); setInstagram(e.target.value); }} value={instagram} />
                 <div className='flex items-center gap-2' >
 
                     <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" onClick={() => {
@@ -132,10 +144,10 @@ function Number({ stage, setStage, number, setNumber, error, setError, completed
                     onChange={(e) => {
                         if (!e.target.value.match(regex_indvidual_char)) {
                             console.log('failed here!', e.target.value);
-                            setError('Only numbers are allowed');
+                            setError(ERROR.INVALID_NUMBER);
                         }
                         else {
-                            setError('');
+                            setError(ERROR.NONE);
                             setNumber(e.target.value);
                         }
                     }} value={number} />
@@ -143,10 +155,10 @@ function Number({ stage, setStage, number, setNumber, error, setError, completed
 
                     <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" onClick={() => {
                         if (number === '') {
-                            setError("Number Can't ne empty");
+                            setError(ERROR.NUMBER);
                         }
                         else if (!number.match(regex_full)) {
-                            setError('Only numbers are allowed');
+                            setError(ERROR.INVALID_NUMBER);
                         }
 
                         else {
@@ -161,6 +173,42 @@ function Number({ stage, setStage, number, setNumber, error, setError, completed
                 </div>
                 <StageNavigator stage={stage} setStage={setStage} completedStages={completedStages} />
             </div>
+        </div>
+    )
+}
+
+function Onlyfans({ stage, setStage, onlyfans, setOnlyfans, error, setError, completedStages }) {
+
+    return (
+        <div className="flex flex-col items-center justify-center flex-1 text-center">
+            <h1 className="text-2xl font-regular md:w-[60vw]">
+                {`Please provide your Onlyfans handle below.`}
+            </h1>
+            <div className="mt-2 flex flex-col gap-4 items-center">
+                <p className="text-red-600 text-sm opacity-70">
+                    {error}
+                </p>
+                <input autoFocus type="text" className="mt-4 px-4 py-2 bg-gray-100 rounded border border-blue-300"
+
+                    onChange={(e) => { setError(ERROR.NONE); setOnlyfans(e.target.value); }} value={onlyfans} />
+                <div className='flex items-center gap-2' >
+
+                    <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" onClick={() => {
+                        if (onlyfans === '') {
+                            setError("Onlyfans handle is Required!");
+                        }
+                        else {
+                            setStage(getNextStage(stage));
+                        }
+                    }}>
+                        OK
+                    </button>
+                    <p className="text-sm text-gray-500">
+                        press <span className="font-bold">Enter ↵</span>
+                    </p>
+                </div>
+            </div>
+            <StageNavigator stage={stage} setStage={setStage} completedStages={completedStages} />
         </div>
     )
 }
@@ -206,6 +254,7 @@ export default function Apply() {
     const [stage, setStage] = useState(STAGE.PROMPT);
     const [name, setName] = useState('');
     const [instagram, setInstagram] = useState('');
+    const [onlyfans, setOnlyfans] = useState('');
     const [number, setNumber] = useState('');
     const [error, setError] = useState('');
 
@@ -229,12 +278,16 @@ export default function Apply() {
             completed.push(STAGE.NUMBER);
         }
 
+        if (onlyfans !== '') {
+            completed.push(STAGE.ONLYFANS);
+        }
+
         setCompletedStages(completed);
 
 
 
     }
-    , [stage, name, instagram, number, error]);
+        , [stage, name, instagram, number, onlyfans, error]);
 
 
 
@@ -249,19 +302,23 @@ export default function Apply() {
                 if (stage === STAGE.NAME && name === '') {
 
                     console.log('Name is empty');
-                    setError("Name Can't ne empty");
+                    setError(ERROR.NAME);
                 }
                 else if (stage === STAGE.INSTAGRAM && instagram === '') {
                     console.log('Instagram Handle is empty');
-                    setError("Instagram Can't ne empty");
+                    setError(ERROR.INSTAGRAM);
                 }
                 else if (stage === STAGE.NUMBER && number === '') {
                     console.log('Number is empty');
-                    setError("Number is Required!");
+                    setError(ERROR.NUMBER);
                 }
                 else if (stage === STAGE.NUMBER && (!number.match(regex_full) || error === 'Only numbers are allowed')) {
                     console.log('Only numbers are allowed');
-                    setError('Only numbers are allowed');
+                    setError(ERROR.INVALID_NUMBER);
+                }
+                else if (stage === STAGE.ONLYFANS && onlyfans === '') {
+                    setError(ERROR.ONLYFANS);
+                    console.log('Onlyfans is empty');
                 }
                 else {
                     setStage(getNextStage(stage));
@@ -275,7 +332,7 @@ export default function Apply() {
         return function cleanup() {
             document.removeEventListener('keydown', handleKeyDown);
         }
-    }, [stage, name, instagram, number, error]);
+    }, [stage, name, instagram, number, onlyfans, error]);
 
 
     return (
@@ -298,6 +355,11 @@ export default function Apply() {
             {
                 stage === STAGE.NUMBER &&
                 <Number stage={stage} setStage={setStage} number={number} setNumber={setNumber} error={error} setError={setError} completedStages={completedStages} />
+            }
+
+            {
+                stage === STAGE.ONLYFANS &&
+                <Onlyfans stage={stage} setStage={setStage} onlyfans={onlyfans} setOnlyfans={setOnlyfans} error={error} setError={setError} completedStages={completedStages} />
             }
 
         </div>
