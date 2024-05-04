@@ -326,6 +326,19 @@ export default function Apply() {
         console.log('Instagram:', instagram);
         console.log('Number:', number);
 
+
+
+
+    }
+        , [stage, name, instagram, number, onlyfans, earnings, error]);
+
+
+
+
+    useEffect(() => {
+
+
+
         const completed = [];
 
         if (name !== '') {
@@ -349,20 +362,10 @@ export default function Apply() {
         setCompletedStages(completed);
 
 
-
-    }
-        , [stage, name, instagram, number, onlyfans, earnings, error]);
-
-
-
-
-    useEffect(() => {
-
-
         async function postData() {
 
             setIsLoading(true);
-            
+            setStage(STAGE.UPLOAD);
             // wait for 2 seconds
             await new Promise(resolve => setTimeout(resolve, 2000));
 
@@ -404,10 +407,10 @@ export default function Apply() {
                     setError(ERROR.EARNINGS_INVALID);
                     console.log('Only numbers are allowed');
                 }
-                else if (stage === STAGE.EARNINGS && completedStages.length !== 5) {
+                else if (stage === STAGE.EARNINGS && completed.length !== 5) {
                     setError(ERROR.FINISH_ALL);
                 }
-                else if (stage === STAGE.EARNINGS && completedStages.length === 5) {
+                else if (stage === STAGE.EARNINGS && completed.length === 5) {
                     console.log('All stages completed');
                     postData();
                 }
@@ -423,7 +426,7 @@ export default function Apply() {
         return function cleanup() {
             document.removeEventListener('keydown', handleKeyDown);
         }
-    }, [stage, name, instagram, number, onlyfans, earnings, error, completedStages]);
+    }, [stage, name, instagram, number, onlyfans, earnings, error]);
 
 
     return (
@@ -459,7 +462,7 @@ export default function Apply() {
             }
 
             {
-                stage === STAGE.UPLOAD &&
+                stage === STAGE.UPLOAD && !isLoading &&
                 <div className="flex flex-col items-center justify-center flex-1 text-center">
                     <h1 className="text-2xl font-regular md:w-[60vw] text-center">
                         Thanks for your interest in partnering with Lift Up.
@@ -469,6 +472,18 @@ export default function Apply() {
                     </p>
                 </div>
 
+            }
+
+            {
+                stage === STAGE.UPLOAD && isLoading &&
+                <div className="flex flex-col items-center justify-center flex-1 text-center">
+                    <h1 className="text-2xl font-regular md:w-[60vw] text-center">
+                        Saving your response ...
+                    </h1>
+                    <p className="text-gray-500">
+                        Please wait
+                    </p>
+                </div>
             }
 
         </div>
