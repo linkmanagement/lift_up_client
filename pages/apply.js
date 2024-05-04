@@ -1,3 +1,4 @@
+import { addLead } from '@/backend/functions';
 import Link from 'next/link';
 import { useEffect, useState } from "react"
 
@@ -220,7 +221,7 @@ function Onlyfans({ stage, setStage, onlyfans, setOnlyfans, error, setError, com
     )
 }
 
-function Earnings({ stage, setStage, earnings, setEarnings, error, setError, completedStages, setIsLoading }) {
+function Earnings({ stage, setStage, earnings, setEarnings, error, setError, completedStages, setIsLoading, name, instagram, number, onlyfans }) {
 
     return (
         <div className="flex flex-col items-center justify-center flex-1 text-center">
@@ -257,9 +258,9 @@ function Earnings({ stage, setStage, earnings, setEarnings, error, setError, com
                         }
                         else {
                             // save data
-                            setStage(getNextStage(stage));
                             setIsLoading(true);
-                            await new Promise(resolve => setTimeout(resolve, 2000));
+                            setStage(getNextStage(stage));
+                            await addLead({ name, instagram, number, onlyfans, earnings });
                             setIsLoading(false);
                         }
                     }}>
@@ -370,9 +371,7 @@ export default function Apply() {
 
             setIsLoading(true);
             setStage(STAGE.UPLOAD);
-            // wait for 2 seconds
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
+            await addLead({ name, instagram, number, onlyfans, earnings });
             setIsLoading(false);
 
         }
