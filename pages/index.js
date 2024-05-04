@@ -215,6 +215,21 @@ function ServicesSection() {
   )
 }
 
+function QuoteSection() {
+  return (
+    <div className="min-h-[60vh] text-center flex items-center justify-center bg-white">
+      <div className='w-[100%] md:w-[85%] lg:w-[55%] m-[40px] md:m-[64px] lg:m-[128px]'>
+        <p className="text-[30px] md:text-[38px] font-regular leading-[1.1] text-black">
+          “Extremely professional team, and easy to work with! They are very hands-on so I can be hands-off. They really brought my profile to a whole new level.”
+        </p>
+        <p className='mt-[20px] text-[16px] font-regular leading-[1.5] text-black'>
+          — NORA L.
+        </p>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
 
   const [openNavbar, setOpenNavbar] = useState(false);
@@ -225,6 +240,7 @@ export default function Home() {
       <HeroSection openNavbar={openNavbar} setOpenNavbar={setOpenNavbar} />
       <SecondarySection />
       <ServicesSection />
+      <QuoteSection />
     </main>
   );
 }
