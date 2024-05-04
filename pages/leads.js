@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { getLeads } from "@/backend/functions";
 import { CoinsIcon, SmartphoneIcon, ClockIcon, UserIcon, InstagramIcon, Star } from "lucide-react";
+import Datepicker from 'react-tailwindcss-datepicker';
+
 
 export default function Leads() {
     // const [leads, setLeads] = useState(Array(100).fill({
@@ -14,6 +16,15 @@ export default function Leads() {
     // }));
 
     const [leads, setLeads] = useState([]);
+    const [value, setValue] = useState({
+        startDate: new Date(),
+        endDate: new Date().setMonth(11),
+    });
+
+    const handleValueChange = (newValue) => {
+        // console.log('newValue:', newValue);
+        setValue(newValue);
+    };
 
     useEffect(() => {
         // Fetch leads data from backend when component mounts
@@ -22,12 +33,50 @@ export default function Leads() {
         });
     }, []);
 
+    function filterLeadsByDateRange(leads) {
+
+        if (!value.startDate || !value.endDate) {
+            return leads;
+        }
+
+        let startDate = new Date(value.startDate);
+        // make sure the start date is at the beginning of the day
+        startDate.setHours(0, 0, 0, 0);
+
+        const endDate = new Date(value.endDate);
+        // make sure the end date is at the end of the day
+        endDate.setHours(23, 59, 59, 999);
+
+        return leads.filter((lead) => {
+            const createdAtDate = new Date(lead.createdAt);
+            console.log('startDate:', startDate);
+            console.log('endDate:', endDate);
+            console.log('createdAtDate:', createdAtDate);
+
+            console.log('createdAtDate >= startDate:', createdAtDate >= startDate);
+            console.log('createdAtDate <= endDate:', createdAtDate <= endDate);
+
+            return createdAtDate >= startDate && createdAtDate <= endDate;
+        });
+
+    }
+
     return (
-        <div className="h-screen bg-gray-900 flex justify-center">
+        <div className="min-h-[200vh] h-screen  bg-gray-900 flex flex-col">
+            <Datepicker
+                containerClassName="relative m-4"
+                placeholder={'range of data'}
+                showShortcuts={false}
+                showFooter={false}
+                value={value}
+                startFrom={new Date("2022-01-01")} 
+                endDate={new Date()}
+                onChange={handleValueChange}
+            />
             <div className="w-full p-8 overflow-y-auto">
                 <h1 className="text-3xl font-bold mb-8 text-white">Leads</h1>
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                    {leads.map((lead, index) => (
+                    {filterLeadsByDateRange(leads)?.map((lead, index) => (
                         <div key={index} className="bg-gray-800 rounded-lg p-6 flex flex-col justify-between">
                             <div className="flex flex-col gap-4">
                                 <div className="flex items-center mb-2">
