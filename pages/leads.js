@@ -15,10 +15,10 @@ export default function Leads() {
     return (
         <div>
             <h1>Leads</h1>
-            {leads.map((lead) => (
-                <ol>
+            {leads.map((lead, index) => (
+                <p key={index}>
                     {JSON.stringify(lead)}
-                </ol>
+                </p>
             ))}
         </div>
     )
