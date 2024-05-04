@@ -58,7 +58,7 @@ function Name({ stage, setStage, name, setName, error, setError }) {
                             setStage(getNextStage(stage));
                         }
                     }}>
-                        Next
+                        OK
                     </button>
                     <p className="text-sm text-gray-500">
                         press <span className="font-bold">Enter ↵</span>
