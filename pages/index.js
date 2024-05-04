@@ -3,6 +3,29 @@ import Head from 'next/head';
 import Link from 'next/link';
 import { useState } from 'react';
 
+const services = [
+  {
+    serviceName: "OnlyFans Content & Marketing Management",
+    content: "Want to take your page to the ultimate arousal? We work to create a consistent content calendar for you to follow. So you can play hard, whilst we work hard. We will manage copywriting, scheduling, editing and distributing so all you need to do is send us your content, and we do the rest.",
+    image: "/service_1.jpeg"
+  },
+  {
+    serviceName: "Let Us Do The Talking",
+    content: "We look after relationships with your fans by managing all chats on a 24/7 basis. That means you can focus on creating exciting content whilst we keep your customers busy and happy.",
+    image: "/service_2.jpg"
+  },
+  {
+    serviceName: "Grow Your Fanbase",
+    content: "Looking to get new fans? Our team work day and night to bring new customers to your page. We manage all your social media accounts and dating apps, growing your influence and getting paying fans to subscribe.",
+    image: "/service_3.jpg"
+  },
+  {
+    serviceName: "Seductively Unique",
+    content: "Every creator has their own spicy something, and that’s what makes your personal brand so unique. We will work with you to develop your brand and help you to focus on what’s really needed to bring your profile to life.",
+    image: "/service_4.jpg"
+  }
+]
+
 const SeoContentHead = () => (
   <Head>
     <title>Unlock Your OnlyFans Potential | Premier Management Agency</title>
@@ -70,7 +93,7 @@ function Nav({ openNavbar, setOpenNavbar }) {
 
 function HeroContent() {
   return (
-    <div className="p-6 md:p-8 lg:p-16 flex flex-col w-[90%] md:max-w-[40vw] gap-4 min-h-[max-content] mb-[40px]">
+    <div className="p-6 md:p-8 lg:p-16 flex flex-col w-[90%] md:max-w-[40vw] gap-4 min-h-[max-content] mb-[40px] md:mb-[100px] lg:mb-[150px]">
       <p className="text-[54px] font-bold leading-[1.1]">
         {`Reaching your full OnlyFans potential starts `}
         <span className='text-[#BFB1C4]'>
@@ -107,7 +130,7 @@ function HeroSection({ openNavbar, setOpenNavbar }) {
 function SecondarySection() {
   return (
     <div className="min-h-[60vh] text-center flex items-center justify-center bg-white">
-      <div className='w-[100%] md:w-[85%] lg:w-[55%] m-[20px] md:m-[64px] lg:m-[128px]'>
+      <div className='w-[100%] md:w-[85%] lg:w-[55%] m-[40px] md:m-[64px] lg:m-[128px]'>
         <p className="text-[54px] font-bold leading-[1.1] text-black">
           We will help you to join the 0.1% top-tier content creators.
         </p>
@@ -116,6 +139,81 @@ function SecondarySection() {
   )
 }
 
+function LeftImageServices({
+  serviceName,
+  content,
+  image
+}) {
+
+  return (
+    <div className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-16 w-[100%] md:w-[80%]">
+      <div className='w-[100%] md:w-[50%] flex-1'>
+        {/* image */}
+        <img src={image} alt={serviceName} className='w-full' />
+      </div>
+      <div className='flex-1 flex flex-col gap-8 mg:gap-16'>
+        {/* service content */}
+        <p className="text-[54px] font-bold leading-[1.1] text-black">
+          {serviceName}
+        </p>
+        <p>
+          {content}
+        </p>
+        <Link href="/apply">
+          <button className="w-[max-content] rounded-none bg-[#000000] text-white text-[13px] px-6 py-4 rounded-lg font-medium hover:bg-[#1b1b1b] hover:opacity-[0.95] transition duration-200 ease-in-out">
+            Apply To Lift Up
+          </button>
+        </Link>
+      </div>
+    </div>
+  )
+}
+
+function RightImageServices({
+  serviceName,
+  content,
+  image
+}) {
+
+  return (
+    <div className="flex flex-col-reverse md:flex-row items-center justify-center gap-4 md:gap-16 w-[100%] md:w-[80%]">
+      <div className='flex-1 flex flex-col gap-8 mg:gap-16'>
+        {/* service content */}
+        <p className="text-[54px] font-bold leading-[1.1] text-black">
+          {serviceName}
+        </p>
+        <p>
+          {content}
+        </p>
+        <Link href="/apply">
+          <button className="w-[max-content] rounded-none bg-[#000000] text-white text-[13px] px-6 py-4 rounded-lg font-medium hover:bg-[#1b1b1b] hover:opacity-[0.95] transition duration-200 ease-in-out">
+            Apply To Lift Up
+          </button>
+        </Link>
+      </div>
+      <div className='w-[100%] md:w
+      -[50%] flex-1'>
+        {/* image */}
+        <img src={image} alt={serviceName} className='w-full' />
+      </div>
+    </div>
+  )
+}
+
+function ServicesSection() {
+  return (
+    <div className='bg-[#BFB1C4] flex flex-col items-center justify-center min-h-[60vh]  p-8 md:p-16 gap-32'>
+      <p className="text-center text-[54px] font-bold leading-[1.1] text-black mb-4">
+        Our Services
+      </p>
+      {
+        services.map((service, index) => {
+          return index % 2 === 0 ? <LeftImageServices {...service} key={index} /> : <RightImageServices {...service} key={index} />
+        })
+      }
+    </div>
+  )
+}
 
 export default function Home() {
 
@@ -126,6 +224,7 @@ export default function Home() {
       <SeoContentHead />
       <HeroSection openNavbar={openNavbar} setOpenNavbar={setOpenNavbar} />
       <SecondarySection />
+      <ServicesSection />
     </main>
   );
 }
