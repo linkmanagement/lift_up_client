@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { getLeads } from "@/backend/functions";
-import { CoinsIcon, SmartphoneIcon, ClockIcon, UserIcon, InstagramIcon, Star } from "lucide-react";
+import { CoinsIcon, SmartphoneIcon, ClockIcon, UserIcon, InstagramIcon, Star, DownloadIcon } from "lucide-react";
 import Datepicker from 'react-tailwindcss-datepicker';
-
+import CsvDownloadButton from 'react-json-to-csv'
 
 export default function Leads() {
     // const [leads, setLeads] = useState(Array(100).fill({
@@ -61,6 +61,22 @@ export default function Leads() {
 
     }
 
+    function csvData() {
+        let filteredLeads = filterLeadsByDateRange(leads);
+        const csv = filteredLeads.map((lead) => {
+            return {
+                full_name: lead.name,
+                phone_number: lead.number,
+                onlyfans_url: lead.onlyfans,
+                instagram_handle: lead.instagram,
+                last_month_earnings: lead.earnings,
+                submitted_at: new Date(lead.createdAt).toLocaleDateString(),
+            };
+        });
+        return csv;
+
+    }
+
     return (
         <div className="min-h-[200vh] h-screen  bg-gray-900 flex flex-col">
             <Datepicker
@@ -69,12 +85,28 @@ export default function Leads() {
                 showShortcuts={false}
                 showFooter={false}
                 value={value}
-                startFrom={new Date("2022-01-01")} 
+                startFrom={new Date("2023-01-01")}
                 endDate={new Date()}
+                displayFormat={"DD/MM/YYYY"}
                 onChange={handleValueChange}
             />
+            {
+                filterLeadsByDateRange(leads).length > 0 &&
+                <CsvDownloadButton data={csvData()} className="bg-blue-500 p-2 rounded-lg flex items-center justify-center w-[max-content] h-12 text-white font-bold hover:bg-blue-600 ml-4">
+                    <p>
+                        export data as CSV
+                    </p>
+                    <DownloadIcon className="text-white w-6 h-6 mr-2" />
+                </CsvDownloadButton>
+            }
             <div className="w-full p-8 overflow-y-auto">
-                <h1 className="text-3xl font-bold mb-8 text-white">Leads</h1>
+                <h1 className="text-3xl font-bold mb-8 text-white">
+                    {
+                        filterLeadsByDateRange(leads).length > 0 ?
+                            `Leads (${filterLeadsByDateRange(leads).length})` :
+                            "No leads found for the selected date range"
+                    }
+                </h1>
                 <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
                     {filterLeadsByDateRange(leads)?.map((lead, index) => (
                         <div key={index} className="bg-gray-800 rounded-lg p-6 flex flex-col justify-between">
