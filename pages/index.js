@@ -239,27 +239,92 @@ function ApplySection() {
           Join The Team
         </p>
         <Link href="/apply">
-        <button className="mt-[100px] w-full md:w-[max-content] rounded-none bg-[#000000] text-white text-[13px] px-6 py-4 rounded-lg font-medium hover:bg-[#1b1b1b] hover:opacity-[0.95] transition duration-200 ease-in-out">
-          Apply To Lift Up
-        </button>
+          <button className="mt-[100px] w-full md:w-[max-content] rounded-none bg-[#000000] text-white text-[13px] px-6 py-4 rounded-lg font-medium hover:bg-[#1b1b1b] hover:opacity-[0.95] transition duration-200 ease-in-out">
+            Apply To Lift Up
+          </button>
         </Link>
       </div>
     </div>
   )
 }
 
+// function Footer() {
+//   return (
+//     <div>
+//       <div>
+//         {/* text */}
+//         <p>
+//           Join the Lift Up team. ♡
+//         </p>
+//       </div>
+//       <div>
+//         <p>
+//           Contact
+//         </p>
+//         {/* contact column 2 links */}
+//         {/* email mailto */}
+//         <p>
+//           <a href="mailto:example@gmail.com">
+//             example@gmail.com
+//           </a>
+//         </p>
+
+//         {/* instagram */}
+//         <p>
+//           <a href="https://www.instagram.com">
+//             Instagram
+//           </a>
+//         </p>
+//       </div>
+//       <div>
+//         {/* Logo */}
+//         <img src="/logo.png" alt="logo" />
+//       </div>
+//     </div>
+//   )
+// }
+
+// style the footer
+function Footer() {
+  return (
+    <div className="bg-white flex flex-col md:flex-row items-center justify-between min-h-[20vh] p-8 md:p-16 gap-8 w-[100%] md:w-[80%] ml-auto mr-auto">
+      <p className="text-[24px] font-bold leading-[1.1] text-center">
+        Join the Lift Up team. ♡
+      </p>
+      <div className="flex flex-col md:flex-col items-center justify-center gap-4">
+        <p className="text-[16px] font-regular leading-[1.5] font-bold">
+          Contact
+        </p>
+        <p className="text-[16px] font-regular leading-[1.5] underline">
+          <a href="mailto:example@gmail.com">
+            example@gmail.com
+          </a>
+        </p>
+        <p className="text-[16px] font-regular leading-[1.5] underline">
+          <a href="https://www.instagram.com" target="_blank">
+            @lifupagencyofficial
+          </a>
+        </p>
+      </div>
+      <img src="/logo.png" alt="logo" className="w-[150px] md:w-[180px] lg:w-[200px] invert" />
+    </div>
+  )
+}
+
+
 export default function Home() {
 
   const [openNavbar, setOpenNavbar] = useState(false);
 
   return (
-    <main className={`h-screen min-h-[max-content] bg-[#1b1b1b] overflow-x-hidden ${openNavbar ? 'overflow-y-hidden' : 'overflow-y-auto'} `}>
+    <main className={`h-screen min-h-[max-content] overflow-x-hidden ${openNavbar ? 'overflow-y-hidden' : 'overflow-y-auto'} `}>
       <SeoContentHead />
       <HeroSection openNavbar={openNavbar} setOpenNavbar={setOpenNavbar} />
       <SecondarySection />
       <ServicesSection />
       <QuoteSection />
       <ApplySection />
+      <Footer />
     </main>
   );
 }
