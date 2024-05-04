@@ -6,7 +6,9 @@ const STAGE = {
     NAME: 'NAME',
     INSTAGRAM: 'INSTAGRAM',
     NUMBER: 'NUMBER',
-    ONLYFANS: 'ONLYFANS'
+    ONLYFANS: 'ONLYFANS',
+    EARNINGS: 'EARNINGS',
+    UPLOAD: 'UPLOAD',
 }
 
 const ERROR = {
@@ -14,8 +16,11 @@ const ERROR = {
     INSTAGRAM: 'Instagram handle is required',
     NUMBER: 'Number is Required!',
     INVALID_NUMBER: 'Only numbers are allowed',
-    ONLYFANS: 'Onlyfans handle is Required!',
+    ONLYFANS: 'Onlyfans link is Required!',
+    EARNINGS: 'Earnings is Required!',
+    EARNINGS_INVALID: 'Only numbers are allowed',
     NONE: '',
+    FINISH_ALL: 'Please fill all the fields',
 }
 
 const regex_full = /^(\+?[0-9]+)?$/;
@@ -32,7 +37,9 @@ function getNextStage(stage) {
         case STAGE.NUMBER:
             return STAGE.ONLYFANS;
         case STAGE.ONLYFANS:
-            return null;
+            return STAGE.EARNINGS;
+        case STAGE.EARNINGS:
+            return STAGE.UPLOAD;
         default:
             return null;
     }
@@ -182,14 +189,14 @@ function Onlyfans({ stage, setStage, onlyfans, setOnlyfans, error, setError, com
     return (
         <div className="flex flex-col items-center justify-center flex-1 text-center">
             <h1 className="text-2xl font-regular md:w-[60vw]">
-                {`Please provide your Onlyfans handle below.`}
+                {`Please provide your OnlyFans profile link below.*`}
             </h1>
             <div className="mt-2 flex flex-col gap-4 items-center">
                 <p className="text-red-600 text-sm opacity-70">
                     {error}
                 </p>
                 <input autoFocus type="text" className="mt-4 px-4 py-2 bg-gray-100 rounded border border-blue-300"
-
+                    placeholder={`@username`}
                     onChange={(e) => { setError(ERROR.NONE); setOnlyfans(e.target.value); }} value={onlyfans} />
                 <div className='flex items-center gap-2' >
 
@@ -213,12 +220,63 @@ function Onlyfans({ stage, setStage, onlyfans, setOnlyfans, error, setError, com
     )
 }
 
+function Earnings({ stage, setStage, earnings, setEarnings, error, setError, completedStages }) {
+
+    return (
+        <div className="flex flex-col items-center justify-center flex-1 text-center">
+            <h1 className="text-2xl font-regular md:w-[60vw]">
+                {`Please provide your last month's earnings on OnlyFans.*`}
+            </h1>
+            <div className="mt-2 flex flex-col gap-4 items-center">
+                <p className="text-red-600 text-sm opacity-70">
+                    {error}
+                </p>
+                <input autoFocus type="text" className="mt-4 px-4 py-2 bg-gray-100 rounded border border-blue-300"
+                    placeholder={`$1000`}
+                    onChange={(e) => {
+                        if (e.target.value.match(regex_full)) {
+                            setError(ERROR.NONE);
+                            setEarnings(e.target.value);
+                        }
+                        else {
+                            setError(ERROR.EARNINGS_INVALID);
+                        }
+
+                    }} value={earnings} />
+                <div className='flex items-center gap-2' >
+
+                    <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" onClick={() => {
+                        if (earnings === '') {
+                            setError(ERROR.EARNINGS);
+                        }
+                        else if (!earnings.match(regex_full)) {
+                            setError(ERROR.EARNINGS_INVALID);
+                        }
+                        else if (completedStages.length !== 5) {
+                            setError(ERROR.FINISH_ALL);
+                        }
+                        else {
+                            setStage(getNextStage(stage));
+                        }
+                    }}>
+                        SUBMIT
+                    </button>
+                    <p className="text-sm text-gray-500">
+                        press <span className="font-bold">Enter ↵</span>
+                    </p>
+                </div>
+            </div>
+            <StageNavigator stage={stage} setStage={setStage} completedStages={completedStages} />
+        </div>
+
+
+    )
+}
+
 function StageNavigator({ stage, setStage, completedStages }) {
 
     // Define stages
-    let stages = Object.values(STAGE);
-    // remove the first stage
-    stages.shift();
+    let stages = [STAGE.NAME, STAGE.INSTAGRAM, STAGE.NUMBER, STAGE.ONLYFANS, STAGE.EARNINGS];
 
 
     // Handle click on a dot
@@ -256,7 +314,9 @@ export default function Apply() {
     const [instagram, setInstagram] = useState('');
     const [onlyfans, setOnlyfans] = useState('');
     const [number, setNumber] = useState('');
+    const [earnings, setEarnings] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
     const [completedStages, setCompletedStages] = useState([]);
 
@@ -282,17 +342,34 @@ export default function Apply() {
             completed.push(STAGE.ONLYFANS);
         }
 
+        if (earnings !== '' && earnings.match(regex_full)) {
+            completed.push(STAGE.EARNINGS);
+        }
+
         setCompletedStages(completed);
 
 
 
     }
-        , [stage, name, instagram, number, onlyfans, error]);
+        , [stage, name, instagram, number, onlyfans, earnings, error]);
 
 
 
 
     useEffect(() => {
+
+
+        async function postData() {
+
+            setIsLoading(true);
+            
+            // wait for 2 seconds
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            setIsLoading(false);
+
+        }
+
         function handleKeyDown(e) {
             console.log(e.keyCode);
             if (e.keyCode == 13) {
@@ -300,7 +377,6 @@ export default function Apply() {
                 console.log('Stage:', stage);
                 console.log('Name:', name);
                 if (stage === STAGE.NAME && name === '') {
-
                     console.log('Name is empty');
                     setError(ERROR.NAME);
                 }
@@ -312,13 +388,28 @@ export default function Apply() {
                     console.log('Number is empty');
                     setError(ERROR.NUMBER);
                 }
-                else if (stage === STAGE.NUMBER && (!number.match(regex_full) || error === 'Only numbers are allowed')) {
+                else if (stage === STAGE.NUMBER && (!number.match(regex_full) || error === ERROR.INVALID_NUMBER)) {
                     console.log('Only numbers are allowed');
                     setError(ERROR.INVALID_NUMBER);
                 }
                 else if (stage === STAGE.ONLYFANS && onlyfans === '') {
                     setError(ERROR.ONLYFANS);
                     console.log('Onlyfans is empty');
+                }
+                else if (stage === STAGE.EARNINGS && earnings === '') {
+                    setError(ERROR.EARNINGS);
+                    console.log('Earnings is empty');
+                }
+                else if (stage === STAGE.EARNINGS && !earnings.match(regex_full)) {
+                    setError(ERROR.EARNINGS_INVALID);
+                    console.log('Only numbers are allowed');
+                }
+                else if (stage === STAGE.EARNINGS && completedStages.length !== 5) {
+                    setError(ERROR.FINISH_ALL);
+                }
+                else if (stage === STAGE.EARNINGS && completedStages.length === 5) {
+                    console.log('All stages completed');
+                    postData();
                 }
                 else {
                     setStage(getNextStage(stage));
@@ -332,7 +423,7 @@ export default function Apply() {
         return function cleanup() {
             document.removeEventListener('keydown', handleKeyDown);
         }
-    }, [stage, name, instagram, number, onlyfans, error]);
+    }, [stage, name, instagram, number, onlyfans, earnings, error, completedStages]);
 
 
     return (
@@ -360,6 +451,24 @@ export default function Apply() {
             {
                 stage === STAGE.ONLYFANS &&
                 <Onlyfans stage={stage} setStage={setStage} onlyfans={onlyfans} setOnlyfans={setOnlyfans} error={error} setError={setError} completedStages={completedStages} />
+            }
+
+            {
+                stage === STAGE.EARNINGS &&
+                <Earnings stage={stage} setStage={setStage} earnings={earnings} setEarnings={setEarnings} error={error} setError={setError} completedStages={completedStages} />
+            }
+
+            {
+                stage === STAGE.UPLOAD &&
+                <div className="flex flex-col items-center justify-center flex-1 text-center">
+                    <h1 className="text-2xl font-regular md:w-[60vw] text-center">
+                        Thanks for your interest in partnering with Lift Up.
+                    </h1>
+                    <p className="text-gray-500">
+                        We will be in touch shortly!
+                    </p>
+                </div>
+
             }
 
         </div>
