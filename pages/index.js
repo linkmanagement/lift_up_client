@@ -238,9 +238,11 @@ function ApplySection() {
         <p className="text-[44px] md:text-[54px] font-bold leading-[1.1] text-black">
           Join The Team
         </p>
+        <Link href="/apply">
         <button className="mt-[100px] w-full md:w-[max-content] rounded-none bg-[#000000] text-white text-[13px] px-6 py-4 rounded-lg font-medium hover:bg-[#1b1b1b] hover:opacity-[0.95] transition duration-200 ease-in-out">
           Apply To Lift Up
         </button>
+        </Link>
       </div>
     </div>
   )
