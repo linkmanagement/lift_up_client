@@ -25,7 +25,7 @@ export default function Home() {
           <div className="p-8 lg:p-16 flex space-between items-center">
             <img src="/logo.png" alt="logo" className="display-block mr-auto cursor-pointer h-[20px] md:h-[30px] lg:h-[40px]" />
 
-            <Link href="/contact">
+            <Link href="/apply">
               <button className="hidden md:block rounded-none bg-[#BFB1C4] text-black text-[13px] px-6 py-2 rounded-lg font-medium hover:bg-[#A498A7] hover:opacity-[0.95] transition duration-200 ease-in-out">
                 Apply To Lift Up
               </button>
@@ -47,7 +47,7 @@ export default function Home() {
 
         <div
           className={
-            'fixed md:hidden bg-white transition-all duration-600 h-screen w-[100vw] fixed z-[3] ' +
+            'fixed flex flex-col md:hidden bg-white transition-all duration-600 h-screen w-[100vw] fixed z-[3] ' +
             (openNavbar ? 'left-0' : 'left-[100vw]')
           }
         >
@@ -60,6 +60,16 @@ export default function Home() {
               </button>
             }
 
+          </div>
+
+          <div className='flex-1 p-8 pt-32 flex flex-col justify-between items-center'>
+            <img src="/apply.png" alt="logo" className="display-block mx-auto cursor-pointer w-[80%]" />
+
+            <Link href="/apply">
+            <button className='bg-black text-white p-4 text-sm w-[80vw]'>
+              Apply Now
+            </button>
+            </Link>
           </div>
 
         </div>
