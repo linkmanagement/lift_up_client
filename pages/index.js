@@ -153,7 +153,7 @@ function LeftImageServices({
       </div>
       <div className='flex-1 flex flex-col gap-8 mg:gap-16'>
         {/* service content */}
-        <p className="text-[54px] font-bold leading-[1.1] text-black">
+        <p className="text-[40px] md:text-[54px] font-bold leading-[1.1] text-black">
           {serviceName}
         </p>
         <p>
@@ -179,7 +179,7 @@ function RightImageServices({
     <div className="flex flex-col-reverse md:flex-row items-center justify-center gap-4 md:gap-16 w-[100%] md:w-[80%]">
       <div className='flex-1 flex flex-col gap-8 mg:gap-16'>
         {/* service content */}
-        <p className="text-[54px] font-bold leading-[1.1] text-black">
+        <p className="text-[40px] md:text-[54px] font-bold leading-[1.1] text-black">
           {serviceName}
         </p>
         <p>
@@ -203,7 +203,7 @@ function RightImageServices({
 function ServicesSection() {
   return (
     <div className='bg-[#BFB1C4] flex flex-col items-center justify-center min-h-[60vh]  p-8 md:p-16 gap-32'>
-      <p className="text-center text-[54px] font-bold leading-[1.1] text-black mb-4">
+      <p className="text-center text-[54px] font-bold leading-[1.1] text-black">
         Our Services
       </p>
       {
