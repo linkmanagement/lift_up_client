@@ -230,6 +230,22 @@ function QuoteSection() {
   )
 }
 
+function ApplySection() {
+  return (
+    <div className="relative min-h-[60vh] text-center flex items-center justify-center gap-4">
+      <div className="bg-[url('/apply.jpg')] bg-cover bg-center bg-no-repeat w-[100%] h-[100%] absolute top-0 left-0 right-0 z-[1] saturate-[0.9] blur-[0.7px] opacity-[0.9] brightness-90 contrast-[0.9]" />
+      <div className='w-[100%] md:w-[85%] lg:w-[55%] m-[40px] md:m-[64px] lg:m-[128px] z-[2]'>
+        <p className="text-[44px] md:text-[54px] font-bold leading-[1.1] text-black">
+          Join The Team
+        </p>
+        <button className="mt-[100px] w-full md:w-[max-content] rounded-none bg-[#000000] text-white text-[13px] px-6 py-4 rounded-lg font-medium hover:bg-[#1b1b1b] hover:opacity-[0.95] transition duration-200 ease-in-out">
+          Apply To Lift Up
+        </button>
+      </div>
+    </div>
+  )
+}
+
 export default function Home() {
 
   const [openNavbar, setOpenNavbar] = useState(false);
@@ -241,6 +257,7 @@ export default function Home() {
       <SecondarySection />
       <ServicesSection />
       <QuoteSection />
+      <ApplySection />
     </main>
   );
 }
