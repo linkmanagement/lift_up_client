@@ -62,7 +62,7 @@ export default function Home() {
 
           </div>
 
-          <div className='flex-1 p-8 pt-32 flex flex-col justify-between items-center'>
+          <div className='flex-[0.8] p-8 pt-32 flex flex-col justify-between items-center'>
             <img src="/apply.png" alt="logo" className="display-block mx-auto cursor-pointer w-[80%]" />
 
             <Link href="/apply">
