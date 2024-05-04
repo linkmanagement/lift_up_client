@@ -220,7 +220,7 @@ function Onlyfans({ stage, setStage, onlyfans, setOnlyfans, error, setError, com
     )
 }
 
-function Earnings({ stage, setStage, earnings, setEarnings, error, setError, completedStages }) {
+function Earnings({ stage, setStage, earnings, setEarnings, error, setError, completedStages, setIsLoading }) {
 
     return (
         <div className="flex flex-col items-center justify-center flex-1 text-center">
@@ -245,7 +245,7 @@ function Earnings({ stage, setStage, earnings, setEarnings, error, setError, com
                     }} value={earnings} />
                 <div className='flex items-center gap-2' >
 
-                    <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" onClick={() => {
+                    <button className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded" onClick={async () => {
                         if (earnings === '') {
                             setError(ERROR.EARNINGS);
                         }
@@ -256,7 +256,11 @@ function Earnings({ stage, setStage, earnings, setEarnings, error, setError, com
                             setError(ERROR.FINISH_ALL);
                         }
                         else {
+                            // save data
                             setStage(getNextStage(stage));
+                            setIsLoading(true);
+                            await new Promise(resolve => setTimeout(resolve, 2000));
+                            setIsLoading(false);
                         }
                     }}>
                         SUBMIT
@@ -458,7 +462,7 @@ export default function Apply() {
 
             {
                 stage === STAGE.EARNINGS &&
-                <Earnings stage={stage} setStage={setStage} earnings={earnings} setEarnings={setEarnings} error={error} setError={setError} completedStages={completedStages} />
+                <Earnings stage={stage} setStage={setStage} earnings={earnings} setEarnings={setEarnings} error={error} setError={setError} completedStages={completedStages} setIsLoading={setIsLoading} />
             }
 
             {
