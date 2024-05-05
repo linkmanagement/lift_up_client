@@ -258,10 +258,10 @@ function Earnings({ stage, setStage, earnings, setEarnings, error, setError, com
                         }
                         else {
                             // save data
-                            setIsLoading(true);
                             setStage(getNextStage(stage));
-                            await addLead({ name, instagram, number, onlyfans, earnings });
-                            setIsLoading(false);
+                            // setIsLoading(true);
+                            // await addLead({ name, instagram, number, onlyfans, earnings });
+                            // setIsLoading(false);
                         }
                     }}>
                         SUBMIT
@@ -370,7 +370,6 @@ export default function Apply() {
         async function postData() {
 
             setIsLoading(true);
-            setStage(STAGE.UPLOAD);
             await addLead({ name, instagram, number, onlyfans, earnings });
             setIsLoading(false);
 
@@ -414,13 +413,20 @@ export default function Apply() {
                     setError(ERROR.FINISH_ALL);
                 }
                 else if (stage === STAGE.EARNINGS && completed.length === 5) {
+                    setStage(STAGE.UPLOAD);
                     console.log('All stages completed');
                     postData();
                 }
+
                 else {
                     setStage(getNextStage(stage));
                 }
             }
+        }
+
+        if (stage === STAGE.UPLOAD && completed.length === 5) {
+            console.log('All stages completed');
+            postData();
         }
 
         document.addEventListener('keydown', handleKeyDown);
