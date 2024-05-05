@@ -29,7 +29,14 @@ export default function Leads() {
     useEffect(() => {
         // Fetch leads data from backend when component mounts
         getLeads().then((leads) => {
-            setLeads(leads);
+
+            let sortedLeadsData = leads.sort((a, b) => {
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            }
+            );
+
+            setLeads(sortedLeadsData);
+
         });
     }, []);
 
