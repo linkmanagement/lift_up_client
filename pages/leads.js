@@ -17,8 +17,8 @@ export default function Leads() {
 
     const [leads, setLeads] = useState([]);
     const [value, setValue] = useState({
-        startDate: new Date(),
-        endDate: new Date().setMonth(11),
+        startDate: null,
+        endDate: null,
     });
 
     const handleValueChange = (newValue) => {
@@ -85,9 +85,8 @@ export default function Leads() {
                 showShortcuts={false}
                 showFooter={false}
                 value={value}
-                startFrom={new Date("2023-01-01")}
-                endDate={new Date()}
                 displayFormat={"DD/MM/YYYY"}
+                startFrom={new Date('2024-05-01')}
                 onChange={handleValueChange}
             />
             {
