@@ -5,7 +5,7 @@ import { useState } from 'react';
 
 const services = [
   {
-    serviceName: "Exclusive content creation,marketing & management",
+    serviceName: "content  management & marketing",
     content: "Looking to elevate your onlyfans page to the next level of excitement? Our team crafts a seamless content schedule, allowing you to indulge in your passions while we handle the details. From crafting engaging copy to scheduling, editing, and distribution, we take care of it all. Just share your content, and leave the rest to us.",
     image: "/service_1.jpg"
   },
