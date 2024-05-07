@@ -220,7 +220,7 @@ function QuoteSection() {
     <div className="min-h-[60vh] text-center flex items-center justify-center bg-white">
       <div className='w-[100%] md:w-[85%] lg:w-[55%] m-[40px] md:m-[64px] lg:m-[128px]'>
         <p className="text-[30px] md:text-[38px] font-regular leading-[1.1] text-black">
-            "Outstandingly professional and effortless collaboration. Their hands-on approach allowed me to take a step back while they worked wonders, bringing my profile to new heights."
+            {`"Outstandingly professional and effortless collaboration. Their hands-on approach allowed me to take a step back while they worked wonders, bringing my profile to new heights."`}
         </p>
         <p className='mt-[20px] text-[16px] font-regular leading-[1.5] text-black'>
           — KELLY S.
